@@ -1,4 +1,5 @@
 body{
+    font-family: "Lobster", cursive;
     margin:0;
     min-height: 100vh;
     background-color: #f9fbf9;
@@ -31,7 +32,6 @@ body{
 }
 
 .head-section{
-    font-family: "Lobster", cursive;
     font-weight: 400;
     font-style: normal;
     display: grid;
@@ -95,3 +95,86 @@ body{
 .auth-nav:hover{
     text-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3);
 }
+
+
+.card-1{
+    max-width: 1500px;
+    margin: 40px auto;
+
+    border: 1px solid white;
+    border-radius: 35px;
+
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    padding: 20px 40px;
+}
+
+.hero-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color:  rgb(74, 93, 75);
+}
+.hero-content h1{
+    font-size: 75px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.hero-content p{
+    margin: 10px;
+    font-size: 25px;
+    font-weight: 100px;
+}
+
+.hero-button{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.hero-button button{
+    padding: 20px 40px;
+     font-family: "Lobster", cursive;
+    font-size: 20px;
+    font-weight: bold;
+    border-color: white;
+    border-radius: 25px;
+    box-shadow: 5px 5px 14px rgba(0,0,0, 0.4);
+    background-color: rgb(92, 214, 98);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hero-button button:hover{
+    transform: translateY(-3px);
+    background-color: rgb(87, 202, 93);
+}
+
+.hero-footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+    padding-right: 40px;
+    margin-top: 20px;
+    color:  rgb(74, 93, 75);
+}
+
+.hero-footer p{
+    font-size: 25px;
+    margin: 5px 5px;
+}
+
+
+
+
