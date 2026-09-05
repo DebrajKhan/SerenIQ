@@ -275,5 +275,44 @@ body {
     color: white;
 }
 
+@media (max-width: 768px) {
+    .head-section {
+        grid-template-columns: 1fr; 
+        gap: 15px;
+    }
+    .logo-title-container {
+        justify-content: center; 
+    }
+    .primary-nav ul, .auth-nav ul {
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 10px;
+    }
 
+    .testimonal-section {
+        grid-template-columns: 1fr; 
+        margin-top: 40px;
+    }
+    .testimonal-card {
+        padding: 20px;
+    }
+    .testimonal-card blockquote {
+        max-height: 150px; 
+    }
+
+    .hero-card {
+        margin: 20px 15px; 
+        padding: 20px 15px;
+    }
+    .hero-content h1 {
+        font-size: 50px; 
+    }
+    .hero-content p {
+        font-size: 18px; 
+    }
+    .hero-button {
+        flex-direction: column; 
+        width: 100%;
+    }
+}
 
