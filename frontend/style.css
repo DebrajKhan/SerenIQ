@@ -10,7 +10,7 @@ body{
         radial-gradient(at 90% 90%, rgba(163, 217, 165, 0.4) 0%, transparent 50%);
     background-attachment: fixed;   
     background-size: 200% 200%;
-    animation: floatMesh 15s ease-in-out infinite; 
+    animation: floatMesh 30s ease-in-out infinite; 
 }
 
 @keyframes floatMesh {
@@ -105,13 +105,14 @@ body{
     border-radius: 35px;
 
     background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 
     border: 2px solid rgba(255, 255, 255, 0.7);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
     padding: 20px 40px;
+    transform: translateZ(12);
 }
 
 .hero-content{
@@ -175,6 +176,12 @@ body{
     margin: 5px 5px;
 }
 
+.features-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
 
 
 
