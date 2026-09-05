@@ -1,15 +1,19 @@
-body{
+body {
     font-family: "Lobster", cursive;
-    margin:0;
+    margin: 0;
     min-height: 100vh;
-    background-color: #f9fbf9;
+    
+    
+    background-color: #fcfbf7; 
+    
     background-image:
-        radial-gradient(at 10% 20%, rgba(135, 195, 143, 0.5) 0%, transparent 50%),
-        radial-gradient(at 80% 10%, rgba(195, 235, 197, 0.6) 0%, transparent 50%),
-        radial-gradient(at 40% 80%, rgba(220, 240, 220, 0.7) 0%, transparent 50%),
-        radial-gradient(at 90% 90%, rgba(163, 217, 165, 0.4) 0%, transparent 50%);
+        radial-gradient(at 10% 20%, rgba(215, 238, 219, 0.7) 0%, transparent 50%),
+        radial-gradient(at 80% 10%, rgba(140, 201, 144, 0.8) 0%, transparent 50%),
+        radial-gradient(at 40% 80%, rgba(143, 224, 162, 0.822) 0%, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(253, 253, 249, 0.95) 0%, transparent 50%);
+        
     background-attachment: fixed;   
-    background-size: 200% 200%;
+    background-size: 300% 300%; 
     animation: floatMesh 30s ease-in-out infinite; 
 }
 
@@ -97,22 +101,17 @@ body{
 }
 
 
-.card-1{
+.hero-card{
     max-width: 1500px;
     margin: 40px auto;
-
     border: 1px solid white;
-    border-radius: 35px;
-
-    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.027);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-
-    border: 2px solid rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.089);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-
     padding: 20px 40px;
-    transform: translateZ(12);
 }
 
 .hero-content{
@@ -176,11 +175,104 @@ body{
     margin: 5px 5px;
 }
 
+.feature-card{
+    max-width: 1500px;
+    margin-top: 100px;
+    border: 1px solid white;
+    border-radius: 35px;
+    background: rgba(255, 255, 255, 0.027);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.089);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px;
+}
+
 .features-section{
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width:100%;
+}
+.features-section h1{
+    color: rgb(74, 93, 75);
+}
+
+.feature-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin: 20px 20px;
+}
+
+.feature-sub-card{
+    margin-top: 20px;
+    background: rgb(92, 214, 98);
+    color: white;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-color: white;
+    border-radius: 25px;
+    padding: 10px 15px;
+    box-shadow: 5px 5px 14px rgba(0,0,0, 0.4);
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.feature-sub-card:hover{
+    background: rgb(87, 202, 93);
+    transform: translateY(-3px);
+    cursor: pointer;
+}
+
+.feature-footer{
+    color: rgb(74, 93, 75);
+}
+
+.testimonal-section{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+    width: 100%;
+    margin-top: 80px;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.testimonal-card{
+    background: rgb(92, 214, 98);
+    color:rgb(74, 93, 75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-color: white;
+    border-radius: 25px;
+    padding: 10px 15px;
+    box-shadow: 5px 5px 14px rgba(0,0,0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonal-card blockquote{
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 100px;
+    margin: 0;
+    padding-right: 15px;
+}
+
+.testimonal-card p{
+    color: white;
 }
 
 
