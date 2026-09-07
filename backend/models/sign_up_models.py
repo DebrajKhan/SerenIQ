@@ -1,11 +1,5 @@
 from pydantic import BaseModel
 
-class LogInData(BaseModel):
-    email:str
-
-class LogInDataAuth(LogInData):
-    password:str  
-
 
 class SignUpData(BaseModel):
     first_name:str
