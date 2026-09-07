@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await response.json();
 
                 if (response.ok) {
+                    localStorage.setItem("sereniq_token", result.access_token);
                     alert("Successfully signed in as " + result.email + "!");
                     window.location.href = "sereniq_main1.html";
                 } else {
@@ -73,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await response.json();
 
                 if (response.ok) {
+                    localStorage.setItem("sereniq_token", result.access_token);
                     alert("Account successfully created for " + result.email + "!");
                     window.location.href = "sereniq_main1.html";
                 } else {
@@ -82,6 +84,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Could not connect to the server. Is Uvicorn running?");
             }
         });
+    }
+
+
+    const clockElement = document.getElementById(".live-clock");
+    if (clockElement) {
+        function updateClock() {
+            const now = new Date();
+            
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            clockElement.innerText = `${hours}:${minutes}:${seconds}`;
+        }
+
+        updateClock();
+
+        setInterval(updateClock, 1000);
     }
 
 });
