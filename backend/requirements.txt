@@ -6,3 +6,5 @@ bcrypt==4.3.0
 passlib[bcrypt]
 python-dotenv
 PyJWT
+pydantic-settings
+pydantic[email]

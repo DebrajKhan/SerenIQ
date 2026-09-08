@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 class LogInData(BaseModel):
-    email:str
+    email:EmailStr
 
 class LogInDataAuth(LogInData):
     password:str  

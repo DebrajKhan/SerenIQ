@@ -1,11 +1,7 @@
-import os
-from dotenv import load_dotenv
+from core.config import settings
 from motor.motor_asyncio import AsyncIOMotorClient
 
-load_dotenv()
-mongoDB_url = os.getenv("MONGODB_URL")
-
-client = AsyncIOMotorClient(mongoDB_url)
+client = AsyncIOMotorClient(settings.mongodb_url)
 
 db = client.sereniq_db
 

@@ -1,30 +1,10 @@
-import os
-from dotenv import load_dotenv
-import jwt
-from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, HTTPException, status
-from passlib.context import CryptContext
-
-from models.sign_in_models import  LogInDataAuth
-from models.sign_up_models import  SignUpDataAuth
+from models.sign_in_models import LogInDataAuth
+from models.sign_up_models import SignUpDataAuth
 from databases.database import users_collection
-
-load_dotenv()
-
-secret_key = os.getenv("SECRET_KEY")
-algo = "HS256"
-access_time_min = 5
+from core.security import pwd_context, create_access_token
 
 router = APIRouter(tags=["Authentication"])
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(minutes=access_time_min)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=algo)
-    return encoded_jwt
-
 
 @router.post("/sign-up")
 async def sign_up(user:SignUpDataAuth):
