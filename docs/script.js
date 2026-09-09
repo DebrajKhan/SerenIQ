@@ -87,7 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    const clockElement = document.getElementById(".live-clock");
+    const clockElement = document.querySelector(".live-clock");
+    
     if (clockElement) {
         function updateClock() {
             const now = new Date();
@@ -95,8 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
-
-            
+    
             hours = hours < 10 ? "0" + hours : hours;
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
@@ -108,5 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setInterval(updateClock, 1000);
     }
-
+    
 });
+
+window.logoutUser = function() {
+    localStorage.removeItem("sereniq_token");
+    console.log("Token successfully cleared from local storage.");
+};
