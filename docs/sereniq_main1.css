@@ -223,6 +223,42 @@ body{
     }
 }
 
+.friend-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    margin-left: auto; 
+}
+
+.video-call-svg {
+    width: 22px;
+    height: 22px;
+    color: rgb(74, 93, 75);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.video-call-svg:hover {
+    transform: scale(1.15) rotate(-5deg); 
+    color: #8fc9a2; 
+    filter: drop-shadow(0 4px 6px rgba(140, 201, 144, 0.4));
+}
+
+.send-message-svg {
+    width: 22px;
+    height: 22px;
+    color: rgb(74, 93, 75); 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.send-message-svg:hover {
+    transform: scale(1.15) rotate(5deg); 
+    color: #8fc9a2; 
+    filter: drop-shadow(0 4px 6px rgba(140, 201, 144, 0.4)); 
+}
+
 .video-rooms{
     display: flex;
     flex-direction: column;

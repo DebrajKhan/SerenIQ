@@ -112,6 +112,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.089);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 20px 40px;
+    transition: all 0.3s ease;
+}
+
+.hero-card:hover{
+    transform: translateY(-3px);
 }
 
 .hero-content{
@@ -178,7 +183,7 @@ body {
 .feature-card{
     max-width: 1500px;
     margin-top: 100px;
-    border: 1px solid white;
+
     border-radius: 35px;
     background: rgba(255, 255, 255, 0.027);
     backdrop-filter: blur(8px);
@@ -186,6 +191,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.089);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 20px 20px;
+    transition: all 0.5s ease;
+}
+
+.feature-card:hover{
+    transform: translateY(-3px);
 }
 
 .features-section{
@@ -248,11 +258,11 @@ body {
 }
 
 .testimonal-card{
-    background: rgb(92, 214, 98);
+    background: rgba(255, 255, 255, 0.027);
     color:rgb(74, 93, 75);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.089);
     border-color: white;
     border-radius: 25px;
     padding: 10px 15px;
@@ -261,6 +271,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.testimonal-card:hover{
+    transform: translateX(4px);
 }
 
 .testimonal-card blockquote{
