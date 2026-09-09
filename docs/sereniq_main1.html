@@ -15,12 +15,42 @@
             <div class="dashboard-header-div1">
                 <h1>Welcome, User</h1>
             </div>
+            <div class="header-profile-section">
+                <svg viewBox="0 0 40 40" class="add-btn-svg" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="36" height="36" rx="10" fill="#ffffff" />
+                    <line x1="20" y1="12" x2="20" y2="28" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
+                    <line x1="12" y1="20" x2="28" y2="20" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
+                </svg>
+
+                <div class="profile-menu-wrapper">
+                    <svg viewBox="0 0 120 120" class="header-profile-pic-svg">
+                        <circle cx="60" cy="60" r="58" fill="#d7eedb"/>
+                        <circle cx="60" cy="45" r="22" fill="#8fc9a2"/>
+                        <path d="M18 108 Q60 68 102 108 L102 120 L18 120 Z" fill="#8fc9a2"/>
+                    </svg>
+                    <div class="profile-dropdown">
+                        <ul>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Subscription</a></li>
+                            <li><a href="#">Day-streak</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li class="log-out-button"><a href="sign_in.html" onclick="logoutUser()">Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </header>
         
         <main>
             <section class="friend-list">
                     <p>check out who is online below</p>
                     <div class="friend-container">
+                        <svg viewBox="0 0 120 120" class="profile-pic-svg">
+                            <circle cx="60" cy="60" r="58" fill="#d7eedb"/>
+                            <circle cx="60" cy="45" r="22" fill="#8fc9a2"/>
+                            <path d="M18 108 Q60 68 102 108 L102 120 L18 120 Z" fill="#8fc9a2"/>
+                        </svg>
+                        
                         <p>user's friend_no1</p>
                         <span class="online-dot"></span>
                     </div>
@@ -44,7 +74,10 @@
                         <p>User's location</p>
                         <p>User's purpose</p>
                         <p>5 people</p>
+                    </div>
+                    <div class="room-action-group">
                         <span class="live-clock">00:00:00</span>
+                        <button class="join-button">Join</button>
                     </div>
                 </div>
             </section>

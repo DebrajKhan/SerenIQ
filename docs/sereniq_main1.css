@@ -37,16 +37,119 @@ body{
 }
 
 .dashboard-header{
+    position: relative;
     margin: auto;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
     color: rgb(74, 93, 75);
-    line-height: 1.2rem;
     font-size: 35px;
+    padding: 30px 50px;
 }
 
 .dashboard-header-div1{
-    margin-top: 20px;
+    margin-top:0;
+}
+
+
+.header-profile-section{
+    position: absolute;
+    right: 50px;
+    margin-left: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.add-btn-svg{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+}
+
+.add-btn-svg:hover{
+    transform: scale(1.1) translateY(-3px);
+    filter: drop-shadow(0 6px 12px rgba(140, 201, 144, 0.4));
+}
+
+.profile-menu-wrapper {
+    position: relative;
+}
+
+.profile-menu-wrapper:hover .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.profile-dropdown{
+    position: absolute;
+    top: 50px; 
+    right: 0; 
+    background: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    overflow: hidden; 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px); 
+    transition: all 0.3s ease;
+}
+
+
+
+
+
+.profile-dropdown ul {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-dropdown li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: rgb(74, 93, 75); 
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+
+.profile-dropdown li a:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.profile-dropdown .logout-btn a {
+    color: #d9534f; 
+    border-top: 1px solid rgba(74, 93, 75, 0.1); 
+}
+
+.profile-dropdown .logout-btn a:hover {
+    background: rgba(217, 83, 79, 0.1); 
+}
+
+.header-profile-pic-svg {
+    cursor:pointer;
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease;
+}
+
+.header-profile-pic-svg:hover {
+    transform: scale(1.1) translateY(-3px); 
+    filter: drop-shadow(0 6px 12px rgba(140, 201, 144, 0.4));
 }
 
 .friend-list{
@@ -64,6 +167,11 @@ body{
     padding: 20px 30px;
     margin: 40px 40px 40px auto;
     gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.friend-list:hover{
+    transform: translateY(-2px);
 }
 
 .friend-container{
@@ -75,6 +183,16 @@ body{
     min-width: 300px; 
     padding: 20px 30px;
     border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.friend-container:hover{
+    transform: translateY(-5px);
+}
+
+.profile-pic-svg {
+    width: 30px;
+    height: 40px;
 }
 
 .online-dot{
@@ -116,6 +234,11 @@ body{
     max-width: 1350px;
     margin: 20px auto;
     padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.video-rooms:hover{
+    transform: translateX(5px);
 }
 
 .video-rooms-header-row{
@@ -125,6 +248,19 @@ body{
     align-items: center;
     background:  rgba(255, 255, 255, 0.5);
     border-radius: 80px;
+    transition: all 0.5s ease;
+}
+
+.video-rooms-header-row:hover{
+    transform: translateY(-3px);
+}
+
+.video-rooms-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 15px;
 }
 
 .video-rooms-subcontainer{
@@ -132,4 +268,44 @@ body{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    padding: 10px 20px;
+    transition: all 0.6s ease;
 }
+
+.video-rooms-subcontainer:hover{
+    transform: translateY(-3px);
+}
+
+.room-action-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.join-button{
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    border-radius: 20px; 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.05);
+    min-width: 80px;
+    padding: 10px 20px; 
+    font-family: inherit;
+    font-weight: bold;
+    color: rgb(74, 93, 75);
+    transition: all 0.3s ease; 
+}
+
+.join-button:hover{
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    cursor: pointer;
+}
+
