@@ -42,15 +42,18 @@
         </header>
         
         <main>
-            <section class="friend-list">
-                    
+            <section class="friend-list"> 
                     <div class="add-frnd">
                         <p>check out who is online below</p>
-                        <svg viewBox="0 0 40 40" class="add-frnd-btn-svg" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="2" width="36" height="36" rx="10" fill="#ffffff" />
-                            <line x1="20" y1="12" x2="20" y2="28" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
-                            <line x1="12" y1="20" x2="28" y2="20" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
-                        </svg>
+                        <div class="search-system">
+                            <svg viewBox="0 0 40 40" class="add-frnd-btn-svg" id="search-trigger" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="36" height="36" rx="10" fill="#ffffff" />
+                                <line x1="20" y1="12" x2="20" y2="28" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
+                                <line x1="12" y1="20" x2="28" y2="20" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
+                            </svg>
+                            <input type="text" id="friend-search-input" class="glass-search-bar" placeholder="search your friends">
+                            <ul id="search-results-popup" class="glass-results-popup"></ul>
+                        </div>
                     </div>
                     <div class="friend-container">
                         <svg viewBox="0 0 120 120" class="profile-pic-svg">
@@ -72,6 +75,7 @@
                                 <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
+                        <div id="dynamic-friends-container" style="display: flex; flex-direction: column; gap: 10px; width: 100%;"></div>
                     </div>
             </section>
 

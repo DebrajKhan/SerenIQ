@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException, status, Security
+from fastapi.security import OAuth2PasswordBearer, HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 import jwt
 
@@ -10,6 +10,7 @@ from core.config import settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/sign-in")
 
+security = HTTPBearer()
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -52,3 +53,25 @@ def RoleChecker(allowed_roles:list[str]):
             )
         return current_user
     return check_roles
+
+
+def get_current_user_email(credentials:HTTPAuthorizationCredentials = Security(security)) ->str :
+    try:
+        payload = jwt.decode(credentials.credentials, settings.secret_key, algorithms = [settings.algorithm])
+
+        email:str = payload.get("sub")
+        if not email:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail = "Email not found!"
+            )
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail = "Log in again, The token has expired!"
+        )
+    except jwt.InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication token."
+        )    

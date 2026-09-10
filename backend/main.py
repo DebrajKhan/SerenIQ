@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from databases.database import connected_to_mongoDB, terminate_mongoDB
-from routers import auth
+from routers import auth, add_friend,my_friends
 
 
 
@@ -28,6 +28,6 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-
-
+app.include_router(add_friend.router)
+app.include_router(my_friends.router)
 
