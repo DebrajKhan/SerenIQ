@@ -65,6 +65,8 @@ def get_current_user_email(credentials:HTTPAuthorizationCredentials = Security(s
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail = "Email not found!"
             )
+
+        return email
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
