@@ -1,13 +1,16 @@
 const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 
+// Dynamically connect to either your local Uvicorn terminal or live Render server
 const API_BASE_URL = isLocalhost 
     ? "http://127.0.0.1:8000"                  
     : "https://sereniq-row2.onrender.com";     
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Load dashboard data on startup
     loadFriends();
-    const signInForm = document.querySelector('.sign-in-form');
+    loadFriendRequests();
 
+    const signInForm = document.querySelector('.sign-in-form');
     if (signInForm) {
         signInForm.addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -24,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetch(`${API_BASE_URL}/sign-in`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData)
+                    body: JSON.stringify(userData) // Secure payload packaging
                 });
 
                 const result = await response.json();
@@ -43,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const signUpForm = document.querySelector('.sign-up-form');
-
     if (signUpForm) {
         signUpForm.addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -94,11 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     const clockElement = document.querySelector(".live-clock");
-    
     if (clockElement) {
         function updateClock() {
             const now = new Date();
-            
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
@@ -109,20 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             clockElement.innerText = `${hours}:${minutes}:${seconds}`;
         }
-
         updateClock();
-
         setInterval(updateClock, 1000);
     }
-    
 });
 
+// Logout functionality
 window.logoutUser = function() {
     localStorage.removeItem("sereniq_token");
     console.log("Token successfully cleared from local storage.");
 };
 
-
+// Search System Logic
 document.addEventListener("DOMContentLoaded", () => {
     const searchTrigger = document.getElementById('search-trigger');
     const searchInput = document.getElementById('friend-search-input');
@@ -148,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             try {
-                
                 const response = await fetch(`${API_BASE_URL}/search-users?name=${query}`);
                 const users = await response.json();
 
@@ -159,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     users.forEach(user => {
                         const li = document.createElement('li');
-                        
                         
                         const infoGroup = document.createElement('div');
                         infoGroup.className = 'user-info-group';
@@ -181,8 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                         addBtn.onclick = async (event) => {
                             event.stopPropagation(); 
-                            
-                            
                             const token = localStorage.getItem("sereniq_token");
                             
                             if (!token) {
@@ -204,15 +198,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                 
                                 if (addResponse.ok) {
                                     alert(result.message);
-                                    addBtn.innerText = 'Added';
+                                    addBtn.innerText = 'Sent'; 
                                     addBtn.style.background = '#d7eedb';
                                     addBtn.style.color = '#4A5D4B';
                                     addBtn.disabled = true;
-                                    if(typeof loadFriends === "function") loadFriends();
                                 } else {
                                     alert("Could not add friend: " + result.detail); 
                                 }
-                                
                             } catch (error) {
                                 console.error("Error adding friend:", error);
                             }
@@ -220,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         li.appendChild(infoGroup);
                         li.appendChild(addBtn);
-                        
                         resultsPopup.appendChild(li);
                     });
                 } else {
@@ -232,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 
 
 async function loadFriends() {
@@ -279,3 +271,80 @@ async function loadFriends() {
         console.error("Error loading friends:", error);
     }
 }
+
+
+async function loadFriendRequests() {
+    const token = localStorage.getItem("sereniq_token");
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/friend-req`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const pendingRequests = await response.json();
+            const messageList = document.getElementById('dynamic-message');
+            if (!messageList) return;
+
+            
+            messageList.innerHTML = ''; 
+
+            if (pendingRequests.length === 0) {
+                messageList.innerHTML = `<li class="message-item"><div class="message-content">You have no new notifications.</div></li>`;
+                return;
+            }
+
+            
+            pendingRequests.forEach(request => {
+                const li = document.createElement('li');
+                li.className = 'message-item';
+                
+                li.innerHTML = `
+                    <div class="message-sender">${request.first_name} has sent a friend request!</div>
+                    <div class="message-content" style="margin-top: 5px;">
+                        <button class="accept-button" onclick="respondToRequest('${request.email}', 'accept')">Accept</button>
+                        <button class="reject-button" onclick="respondToRequest('${request.email}', 'reject')">Reject</button>
+                    </div>
+                `;
+                messageList.appendChild(li);
+            });
+        }
+    } catch (error) {
+        console.error("Failed to load notifications:", error);
+    }
+}
+
+
+window.respondToRequest = async function(friendEmail, actionType) {
+    const token = localStorage.getItem("sereniq_token");
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/respond-friend-req`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ email: friendEmail, action: actionType })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(`Friend request ${actionType}ed successfully!`);
+            
+            
+            loadFriendRequests();
+            if (actionType === 'accept') {
+                loadFriends(); 
+            }
+        } else {
+            alert("Error: " + result.detail);
+        }
+    } catch (error) {
+        console.error("Error processing request:", error);
+    }
+};
