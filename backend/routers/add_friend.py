@@ -47,14 +47,15 @@ async def add_friend(request: AddFriendRequest, current_email: str = Depends(get
 
     
     exact_friend_email = target_friend.get("email")
+    exact_current_email = current_user.get("email")
 
     if exact_friend_email in current_user.get("friends", []):
         raise HTTPException(status_code=400, detail="This person is already in your friend list!")
 
     
     await users_collection.update_one(
-        {"_id": current_user["_id"]},
-        {"$addToSet": {"friends": exact_friend_email}}
+        {"_id": target_friend["_id"]},
+        {"$addToSet": {"pending_requests": exact_current_email}}
     )
 
     return {"message": f"Successfully added {target_friend.get('first_name')}!"}

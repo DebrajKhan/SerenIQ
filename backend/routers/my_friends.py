@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.get("/my-friends")
 async def get_my_friends(current_email: str = Depends(get_current_user_email)):
-    # Find user case-insensitively
+    
     user = await users_collection.find_one({"email": {"$regex": f"^{current_email}$", "$options": "i"}})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

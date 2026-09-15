@@ -8,7 +8,7 @@ router = APIRouter(tags=["Authentication"])
 
 @router.post("/sign-up")
 async def sign_up(user:SignUpDataAuth):
-    user.email == user.email.lower()
+    user.email = user.email.lower()
     try:
         existing_user = await users_collection.find_one({"email" : user.email})
         if existing_user:
@@ -22,6 +22,7 @@ async def sign_up(user:SignUpDataAuth):
         user_data = user.model_dump()
         user_data["password"] = hashed_password
         user_data["friends"] = []
+        user_data["pending_requests"] = []
 
         await users_collection.insert_one(user_data)
         print(f"New user successfully registered: {user.email}")
