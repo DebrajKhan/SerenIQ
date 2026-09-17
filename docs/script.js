@@ -354,7 +354,7 @@ async function loadFriendRequests() {
                 li.innerHTML = `
                     <div class="message-sender">${request.first_name} has sent a friend request!</div>
                     <div class="message-content" style="margin-top: 5px;">
-                        <button class="accept-button" onclick="respondToRequest('${request.email}', 'accept')">Accept</button>
+                        <button class="accept-button" onclick="respondToRequest('${request.email}', 'accept', '${request.first_name}')">Accept</button>
                         <button class="reject-button" onclick="respondToRequest('${request.email}', 'reject')">Reject</button>
                     </div>
                 `;
@@ -383,12 +383,12 @@ window.respondToRequest = async function(friendEmail, actionType) {
         const result = await response.json();
 
         if (response.ok) {
-            alert(`Friend request ${actionType}ed successfully!`);
-            
-            
+
+
             loadFriendRequests();
             if (actionType === 'accept') {
                 loadFriends(); 
+                showFriendToast(friendname);
             }
         } else {
             alert("Error: " + result.detail);
@@ -397,3 +397,15 @@ window.respondToRequest = async function(friendEmail, actionType) {
         console.error("Error processing request:", error);
     }
 };
+
+function showFriendToast(name) {
+    const toast = document.getElementById('friend-toast-slider');
+    if (!toast) return;
+    toast.innerText = `You are now friends with ${name}!`;
+
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000); 
+}
