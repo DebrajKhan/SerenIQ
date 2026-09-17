@@ -13,6 +13,7 @@ async def respond_friend_req(request:RespondRequest, current_email:str = Depends
         
     exact_current_email = current_user.get("email")
     exact_sender_email = request.email
+    current_user_name = current_user.get("first_name", "A friend")
 
     if(request.action == "accept"):
         await users_collection.update_one(
@@ -21,7 +22,10 @@ async def respond_friend_req(request:RespondRequest, current_email:str = Depends
         )
         await users_collection.update_one(
             {"email": exact_sender_email},
-            {"$addToSet": {"friends": exact_current_email}}
+            {
+                "$addToSet": {"friends": exact_current_email},
+                "$push" : {"toast_alerts" : current_user_name}
+            }
         )
 
     await users_collection.update_one(

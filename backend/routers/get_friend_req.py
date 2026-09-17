@@ -37,3 +37,19 @@ async def get_friend_requests(current_email : str = Depends(get_current_user_ema
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Internal Server error: {e}"
             )
+
+
+@router.get('/toast-alerts')
+async def get_toaster_alerts(current_email:str = Depends(get_current_user_email)):
+    user = await users_collection.find_one({"email" : {"$regex": f"^{current_email}$", "$options" : "i"}})
+    if not user:
+         return []
+
+    alerts = user.get("toast_alerts", [])
+    if alerts:
+        await users_collection.update_one(
+            {"_id": user["_id"]},
+            {"$set": {"toast_alerts": []}}
+        )
+        
+    return alerts    
