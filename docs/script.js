@@ -1,12 +1,10 @@
 const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-// Dynamically connect to either your local Uvicorn terminal or live Render server
 const API_BASE_URL = isLocalhost 
     ? "http://127.0.0.1:8000"                  
     : "https://sereniq-row2.onrender.com";     
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Load dashboard data on startup
+    checkToastAlerts();
     loadFriends();
     loadFriendRequests();
 
@@ -27,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetch(`${API_BASE_URL}/sign-in`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData) // Secure payload packaging
+                    body: JSON.stringify(userData) 
                 });
 
                 const result = await response.json();
@@ -366,7 +364,8 @@ async function loadFriendRequests() {
     }
 }
 
-window.respondToRequest = async function(friendEmail, actionType) {
+
+window.respondToRequest = async function(friendEmail, actionType, friendName = "") {
     const token = localStorage.getItem("sereniq_token");
     if (!token) return;
 
@@ -383,12 +382,12 @@ window.respondToRequest = async function(friendEmail, actionType) {
         const result = await response.json();
 
         if (response.ok) {
-
-
+            
             loadFriendRequests();
+            
             if (actionType === 'accept') {
                 loadFriends(); 
-                showFriendToast(friendname);
+                showFriendToast(friendName);
             }
         } else {
             alert("Error: " + result.detail);
@@ -397,6 +396,7 @@ window.respondToRequest = async function(friendEmail, actionType) {
         console.error("Error processing request:", error);
     }
 };
+
 
 function showFriendToast(name) {
     const toast = document.getElementById('friend-toast-slider');
@@ -408,4 +408,28 @@ function showFriendToast(name) {
     setTimeout(() => {
         toast.classList.remove('show');
     }, 3000); 
+}
+
+async function checkToastAlerts() {
+    const token = localStorage.getItem("sereniq_token");
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/toast-alerts`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const alerts = await response.json();
+            alerts.forEach((friendName, index) => {
+
+                setTimeout(() => {
+                    showFriendToast(friendName);
+                }, index * 3500); 
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching toast alerts:", error);
+    }
 }
