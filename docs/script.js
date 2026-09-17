@@ -317,6 +317,55 @@ async function loadFriendRequests() {
 }
 
 
+async function loadFriendRequests() {
+    const token = localStorage.getItem("sereniq_token");
+    if (!token) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/friend-req`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const pendingRequests = await response.json();
+            const messageList = document.getElementById('dynamic-message');
+            const badge = document.getElementById('notification-badge'); 
+            
+            if (!messageList) return;
+
+            messageList.innerHTML = ''; 
+
+            if (pendingRequests.length === 0) {
+                if (badge) badge.style.display = 'none'; 
+                messageList.innerHTML = `<li class="message-item"><div class="message-content">You have no new notifications.</div></li>`;
+                return;
+            } else {
+                if (badge) {
+                    badge.style.display = 'flex'; 
+                    badge.innerText = pendingRequests.length; 
+                }
+            }
+
+            pendingRequests.forEach(request => {
+                const li = document.createElement('li');
+                li.className = 'message-item';
+                
+                li.innerHTML = `
+                    <div class="message-sender">${request.first_name} has sent a friend request!</div>
+                    <div class="message-content" style="margin-top: 5px;">
+                        <button class="accept-button" onclick="respondToRequest('${request.email}', 'accept')">Accept</button>
+                        <button class="reject-button" onclick="respondToRequest('${request.email}', 'reject')">Reject</button>
+                    </div>
+                `;
+                messageList.appendChild(li);
+            });
+        }
+    } catch (error) {
+        console.error("Failed to load notifications:", error);
+    }
+}
+
 window.respondToRequest = async function(friendEmail, actionType) {
     const token = localStorage.getItem("sereniq_token");
     if (!token) return;
