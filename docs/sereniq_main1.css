@@ -298,7 +298,7 @@ body{
 
 .friend-list{
     position: relative;
-    overflow: hidden;
+    
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -336,7 +336,6 @@ body{
     z-index: 100;
     pointer-events: none; 
 }
-
 
 .toast-slider.show {
     transform: translateX(-50%) translateY(0);
