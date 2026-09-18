@@ -386,28 +386,33 @@ body{
 }
 
 .dynamic-friends-container{
+    display: flex; 
+    flex-direction: column;
+    gap: 10px; 
+    width: 100%;
     max-height: 320px;
-    overflow-y: auto;
+    overflow: auto;
     padding-right: 10px;
     scroll-behavior: smooth;
 }
 
 #dynamic-friends-container::-webkit-scrollbar {
-    width: 6px; 
+    width: 10px; 
 }
 
 #dynamic-friends-container::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.2); 
-    border-radius: 10px;
+
 }
 
 #dynamic-friends-container::-webkit-scrollbar-thumb {
     background: rgba(140, 201, 144, 0.8); 
-    border-radius: 10px;
+    
 }
 
 #dynamic-friends-container::-webkit-scrollbar-thumb:hover {
     background: rgba(140, 201, 144, 1);
+    border-radius: 35px;
 }
 
 
