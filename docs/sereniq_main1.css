@@ -385,7 +385,7 @@ body{
     transform: translateY(-5px);
 }
 
-.dynamic-friends-container{
+#dynamic-friends-container{
    display: flex;
     flex-direction: column;
     gap: 10px;
