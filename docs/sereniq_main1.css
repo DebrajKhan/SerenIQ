@@ -490,8 +490,8 @@ body{
 }
 
 .cancel-btn-svg{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     color:rgb(74, 93, 75);
     cursor: pointer;
     transition: all 0.3s ease; 
