@@ -112,13 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Logout functionality
+
 window.logoutUser = function() {
     localStorage.removeItem("sereniq_token");
     console.log("Token successfully cleared from local storage.");
 };
 
-// Search System Logic
+
 document.addEventListener("DOMContentLoaded", () => {
     const searchTrigger = document.getElementById('search-trigger');
     const searchInput = document.getElementById('friend-search-input');

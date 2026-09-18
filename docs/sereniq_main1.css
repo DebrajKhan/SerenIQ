@@ -388,7 +388,7 @@ body{
 .dynamic-friends-container{
     display: flex; 
     flex-direction: column;
-    gap: 10px; 
+    gap: 20px; 
     width: 100%;
     max-height: 320px;
     overflow: auto;
@@ -407,7 +407,7 @@ body{
 
 #dynamic-friends-container::-webkit-scrollbar-thumb {
     background: rgba(140, 201, 144, 0.8); 
-    
+
 }
 
 #dynamic-friends-container::-webkit-scrollbar-thumb:hover {
