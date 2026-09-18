@@ -378,6 +378,7 @@ body{
     padding: 20px 30px;
     border-radius: 25px;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
 .friend-container:hover{
@@ -385,12 +386,14 @@ body{
 }
 
 .dynamic-friends-container{
-    display: flex; 
+   display: flex;
     flex-direction: column;
-    gap: 20px; 
+    gap: 10px;
     width: 100%;
-    max-height: 320px;
-    padding-right: 10px;
+    
+    max-height: 340px; 
+    overflow-y: auto;  
+    padding-right: 10px; 
     scroll-behavior: smooth;
 }
 
@@ -405,7 +408,7 @@ body{
 
 #dynamic-friends-container::-webkit-scrollbar-thumb {
     background: rgba(140, 201, 144, 0.8); 
-
+    border-radius: 15px;
 }
 
 #dynamic-friends-container::-webkit-scrollbar-thumb:hover {
