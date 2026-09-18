@@ -489,6 +489,19 @@ body{
     filter: drop-shadow(0 4px 6px rgba(140, 201, 144, 0.4)); 
 }
 
+.cancel-btn-svg{
+    width: 20px;
+    height: 20px;
+    color:rgb(74, 93, 75);
+    cursor: pointer;
+    transition: all 0.3s ease; 
+}
+
+.cancel-btn-svg:hover{
+    transform: translateY(-4px);
+    color:  #8fc9a2;
+    filter: drop-shadow(0 4px 6px rgba(140, 201, 144, 0.4)); 
+}
 .video-rooms{
     display: flex;
     flex-direction: column;

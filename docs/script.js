@@ -259,6 +259,10 @@ async function loadFriends() {
                             <svg viewBox="0 0 24 24" class="send-message-svg" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+                            <svg viewBox="0 0 40 40" class="cancel-btn-svg" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="13.5" y1="13.5" x2="26.5" y2="26.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                                <line x1="26.5" y1="13.5" x2="13.5" y2="26.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            </svg>
                         </div>
                     </div>
                 `;
