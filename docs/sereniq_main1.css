@@ -298,7 +298,6 @@ body{
 
 .friend-list{
     position: relative;
-    overflow: auto;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -315,25 +314,6 @@ body{
     gap: 10px;
     transition: all 0.3s ease;
 }
-
-.friend-list::-webkit-scrollbar{
-    width: 10px;
-}
-
-.friend-list::-webkit-scrollbar-track{
-    background: grey;
-}
-
-.friend-list::-webkit-scrollbar-thumb{
-    background: rgba(74, 93, 75,0.4);
-    border-radius: 15px;
-}
-
-.friend-list::-webkit-scrollbar-thumb:hover{
-    background: rgb(74,93,75);
-    border-radius: 35px;
-}
-
 
 .toast-slider {
     position: absolute;
@@ -413,6 +393,26 @@ body{
     padding-right: 10px;
     scroll-behavior: smooth;
 }
+
+#dynamic-friends-container::-webkit-scrollbar {
+    width: 10px; 
+}
+
+#dynamic-friends-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2); 
+
+}
+
+#dynamic-friends-container::-webkit-scrollbar-thumb {
+    background: rgba(140, 201, 144, 0.8); 
+
+}
+
+#dynamic-friends-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(140, 201, 144, 1);
+    border-radius: 35px;
+}
+
 
 .profile-pic-svg {
     width: 40px;
