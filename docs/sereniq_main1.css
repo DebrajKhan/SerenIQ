@@ -384,17 +384,19 @@ body{
 .friend-container:hover{
     transform: translateY(-5px);
 }
-
-#dynamic-friends-container{
-   display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+#dynamic-friends-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
     
-    max-height: 320px; 
-    overflow-y: auto;  
-    padding-right: 10px; 
-    scroll-behavior: smooth;
+    
+    max-height: 320px !important; 
+    min-height: 0 !important; 
+    overflow-y: auto !important;  
+    
+    padding-right: 10px !important; 
+    scroll-behavior: smooth !important;
 }
 
 #dynamic-friends-container::-webkit-scrollbar {
@@ -403,7 +405,6 @@ body{
 
 #dynamic-friends-container::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.2); 
-
 }
 
 #dynamic-friends-container::-webkit-scrollbar-thumb {
