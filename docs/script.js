@@ -256,9 +256,12 @@ async function loadFriends() {
                                 <rect x="2" y="6" width="14" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M16 10.5L22 7.5V16.5L16 13.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <svg viewBox="0 0 24 24" class="send-message-svg" xmlns="http://www.w3.org/2000/svg">
+                            
+                            <!-- MAGIC HAPPENS HERE: Added onclick redirect with the friend's email -->
+                            <svg onclick="window.location.href='chatroom.html?friend=${encodeURIComponent(friend.email)}'" viewBox="0 0 24 24" class="send-message-svg" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+                            
                             <svg viewBox="0 0 40 40" class="cancel-btn-svg" xmlns="http://www.w3.org/2000/svg">
                                 <line x1="13.5" y1="13.5" x2="26.5" y2="26.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
                                 <line x1="26.5" y1="13.5" x2="13.5" y2="26.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
