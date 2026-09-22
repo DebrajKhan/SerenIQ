@@ -54,10 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span>Active now</span>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="action-btn" title="Call">📞</button>
-                <button class="action-btn" title="Video">📹</button>
-            </div>
         `;
     }
 
@@ -129,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatSocket.onmessage = (event) => {
         const incomingData = JSON.parse(event.data);
       
-        if (incomingData.sender === chatPartnerEmail) {
+        if (incomingData.sender_email === chatPartnerEmail) {
             appendMessage(incomingData.message, false);
         }
     };
@@ -146,18 +142,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = chatInput.value.trim();
         if (!text) return;
 
-        
-        const payload = {
-            target_email: chatPartnerEmail,
-            message: text
-        };
+        if (chatSocket.readyState !== WebSocket.OPEN) {
+            alert("Connection lost! Render might be waking up. Please refresh the page.");
+            console.error("Socket state is:", chatSocket.readyState);
+            return;
+        }
 
-        chatSocket.send(JSON.stringify(payload));
-
-        appendMessage(text, true);
-
-        chatInput.value = '';
-        chatInput.focus();
+        try {
+            const payload = {
+                target_email: chatPartnerEmail,
+                message: text
+            };
+            chatSocket.send(JSON.stringify(payload));
+            appendMessage(text, true);
+            chatInput.value = '';
+            chatInput.focus();
+            
+        } catch (error) {
+            console.error("Failed to send message:", error);
+            alert("Error sending message over the live socket.");
+        }
     }
 
    
