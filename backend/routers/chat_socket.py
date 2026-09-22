@@ -17,8 +17,12 @@ class ConnectionManager():
 
     async def send_personal_message(self, message:str, sender_email:str, target_email:str):
         if target_email in self.active_connections:
-            payload = {"message" : message}
-            self.active_connections[target_email].send_json(payload)
+            payload = {
+                "sender_email" : sender_email,
+                "message" : message
+                }
+            
+            await self.active_connections[target_email].send_json(payload)
 
 manager = ConnectionManager()
 
