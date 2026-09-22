@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SerenIQ Live Chat</title>
+        <link rel="icon" type="image/png" href="sereniq_logo-removebg-preview.png">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="chatroom.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <div class="chat-window">
+                
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="live-indicator">
+                            <div class="dot"></div>
+                            <span>Live</span>
+                        </div>
+                        <h2>Private Room</h2>
+                        <p class="participant-count" id="participant-count">0 participants</p>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="participant-list" id="dynamic-participants">
+                        <div class="send-as-label">Send as</div>
+                    </div>
+
+                    <div class="sidebar-footer"></div>
+                </aside>
+
+                <main class="chat-area">
+                    <header class="chat-header" id="dynamic-chat-header"></header>
+                    <div class="chat-messages" id="dynamic-messages"></div>
+
+                    <div class="sending-as-tag">
+                        <span class="label">Sending as</span>
+                        <span class="name active-user-name">...</span>
+                    </div>
+
+                    <div class="input-area">
+                        <div class="input-container">
+                            <textarea id="chat-input" placeholder="Type a message…" rows="1"></textarea>
+                            <button class="send-btn" id="send-btn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="white" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="input-hint">Enter to send · Shift+Enter for new line</div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
