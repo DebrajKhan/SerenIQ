@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
     const WS_BASE_URL = isLocalhost ? "ws://127.0.0.1:8000" : "wss://sereniq-row2.onrender.com";
+    const API_BASE_URL = isLocalhost ? "http://127.0.0.1:8000" : "https://sereniq-row2.onrender.com";
+
+
 
     const token = localStorage.getItem("sereniq_token");
     if (!token) {
@@ -9,16 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-   
     let currentUserEmail = "";
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        
         const payload = JSON.parse(atob(base64));
         currentUserEmail = payload.sub;
     } catch (e) {
-        console.error("Invalid token format or decoding failed.");
+        console.error("Invalid token format.");
         return;
     }
 
@@ -46,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </svg>
     `;
 
-    
+
+
     function renderHeader() {
         document.getElementById('dynamic-chat-header').innerHTML = `
             <div class="avatar md">${profileSVG}</div>
@@ -82,13 +84,99 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('dynamic-sender-name').innerText = currentUserName;
     }
 
-    function appendMessage(text, isSelf) {
-        const msgContainer = document.getElementById('dynamic-messages');
+    renderHeader();
+    renderParticipants();
+
+    let currentSkip = 0;
+    let isFetching = false;
+    let hasMoreMessages = true;
+    const msgContainer = document.getElementById('dynamic-messages');
+
+    msgContainer.innerHTML = '';
+
+    async function loadChatHistory() {
+        if (isFetching || !hasMoreMessages) return;
+        isFetching = true;
+
+        try {
+            const endpoint = `${API_BASE_URL}/ws/chat-history?sender_email=${encodeURIComponent(currentUserEmail)}&target_email=${encodeURIComponent(chatPartnerEmail)}&sk=${currentSkip}`;
+            const res = await fetch(endpoint);
+            const messages = await res.json();
+            
+            if (messages.length < 50) {
+                hasMoreMessages = false;
+            }
+
+            const previousScrollHeight = msgContainer.scrollHeight;
+            messages.reverse();
+
+            let htmlChunk = "";
+            let lastRenderedDate = "";
+
+            messages.forEach(msg => {
+                const msgDateObj = new Date(msg.timestamp);
+                const dateStr = msgDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const timeStr = msgDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                if (dateStr !== lastRenderedDate) {
+                    htmlChunk += `
+                        <div class="date-container">
+                            <span class="date-pill">${dateStr}</span>
+                        </div>
+                    `;
+                    lastRenderedDate = dateStr;
+                }
+
+                const isSelf = msg.sender_email === currentUserEmail;
+                const alignClass = isSelf ? 'self' : 'other';
+                const bubbleClass = isSelf ? 'bubble-self' : 'bubble-other';
+                const contentClass = isSelf ? 'self-content' : '';
+                const senderName = isSelf ? currentUserName : chatPartnerName;
+
+                htmlChunk += `
+                    <div class="message-row ${alignClass}">
+                        ${!isSelf ? `<div class="avatar sm">${profileSVG}</div>` : ''}
+                        <div class="message-content ${contentClass}">
+                            ${!isSelf ? `<span class="sender-name partner-text">${senderName}</span>` : ''}
+                            <div class="bubble ${bubbleClass}">${msg.message}</div>
+                            <div class="message-meta">
+                                <span class="time">${timeStr}</span>
+                                ${isSelf ? `<span class="read-receipt read">✓✓</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            msgContainer.insertAdjacentHTML('afterbegin', htmlChunk);
+
+            if (currentSkip === 0) {
+                msgContainer.scrollTop = msgContainer.scrollHeight; 
+            } else {
+                msgContainer.scrollTop = msgContainer.scrollHeight - previousScrollHeight; 
+            }
+
+            currentSkip += 50; 
+            
+        } catch (err) {
+            console.error("Failed to load history:", err);
+        } finally {
+            isFetching = false;
+        }
+    }
+
+    msgContainer.addEventListener('scroll', () => {
+        if (msgContainer.scrollTop === 0) {
+            loadChatHistory();
+        }
+    });
+
+    loadChatHistory();
+
+    function appendLiveMessage(text, isSelf) {
         const alignClass = isSelf ? 'self' : 'other';
         const bubbleClass = isSelf ? 'bubble-self' : 'bubble-other';
         const contentClass = isSelf ? 'self-content' : '';
         const senderName = isSelf ? currentUserName : chatPartnerName;
-        
         const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         const msgHTML = `
@@ -104,25 +192,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
-        
         msgContainer.insertAdjacentHTML('beforeend', msgHTML);
-        msgContainer.scrollTop = msgContainer.scrollHeight;
+        msgContainer.scrollTop = msgContainer.scrollHeight; 
     }
 
-    renderHeader();
-    renderParticipants();
-    document.getElementById('dynamic-messages').innerHTML = `
-        <div class="date-container">
-            <span class="date-pill">Today · ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-        </div>
-    `;
 
-
-    
     let chatSocket;
 
     function connectWebSocket() {
-        
         const statusText = document.querySelector('.status span:last-child');
         const statusDot = document.querySelector('.status .dot');
         
@@ -131,12 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
             statusDot.style.background = '#f39c12'; 
         }
 
-        
         chatSocket = new WebSocket(`${WS_BASE_URL}/ws/chat/${encodeURIComponent(currentUserEmail)}`);
 
         chatSocket.onopen = () => {
             console.log("Connected to SerenIQ Live Chat server!");
-           
             if (statusText && statusDot) {
                 statusText.innerText = 'Active now';
                 statusDot.style.background = '#4caf58'; 
@@ -146,12 +221,12 @@ document.addEventListener("DOMContentLoaded", () => {
         chatSocket.onmessage = (event) => {
             const incomingData = JSON.parse(event.data);
             if (incomingData.sender_email === chatPartnerEmail) {
-                appendMessage(incomingData.message, false);
+                appendLiveMessage(incomingData.message, false);
             }
         };
 
         chatSocket.onclose = () => {
-            console.warn("Socket closed. Render is likely asleep. Retrying in 3 seconds...");
+            console.warn("Socket closed. Retrying in 3 seconds...");
             setTimeout(connectWebSocket, 3000);
         };
 
@@ -161,11 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    
     connectWebSocket();
 
-
-    
+    // --- 7. Sending Outbound Messages ---
     const sendBtn = document.getElementById('send-btn');
     const chatInput = document.getElementById('chat-input');
 
@@ -173,7 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = chatInput.value.trim();
         if (!text) return;
 
-        
         if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
             alert("Still waking up the server! Please wait a few seconds and try again.");
             return;
@@ -185,7 +257,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 message: text
             };
             chatSocket.send(JSON.stringify(payload));
-            appendMessage(text, true);
+            appendLiveMessage(text, true);
+            
             chatInput.value = '';
             chatInput.focus();
             
@@ -195,7 +268,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
    
-    
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
