@@ -118,26 +118,54 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
 
-    const chatSocket = new WebSocket(`${WS_BASE_URL}/ws/chat/${currentUserEmail}`);
+    
+    let chatSocket;
 
-    chatSocket.onopen = () => {
-        console.log("Connected to SerenIQ Live Chat server!");
-    };
+    function connectWebSocket() {
+        
+        const statusText = document.querySelector('.status span:last-child');
+        const statusDot = document.querySelector('.status .dot');
+        
+        if (statusText && statusDot) {
+            statusText.innerText = 'Connecting...';
+            statusDot.style.background = '#f39c12'; 
+        }
+
+        
+        chatSocket = new WebSocket(`${WS_BASE_URL}/ws/chat/${encodeURIComponent(currentUserEmail)}`);
+
+        chatSocket.onopen = () => {
+            console.log("Connected to SerenIQ Live Chat server!");
+           
+            if (statusText && statusDot) {
+                statusText.innerText = 'Active now';
+                statusDot.style.background = '#4caf58'; 
+            }
+        };
+
+        chatSocket.onmessage = (event) => {
+            const incomingData = JSON.parse(event.data);
+            if (incomingData.sender_email === chatPartnerEmail) {
+                appendMessage(incomingData.message, false);
+            }
+        };
+
+        chatSocket.onclose = () => {
+            console.warn("Socket closed. Render is likely asleep. Retrying in 3 seconds...");
+            setTimeout(connectWebSocket, 3000);
+        };
+
+        chatSocket.onerror = (error) => {
+            console.error("WebSocket Error encountered.");
+            chatSocket.close(); 
+        };
+    }
 
     
-    chatSocket.onmessage = (event) => {
-        const incomingData = JSON.parse(event.data);
-      
-        if (incomingData.sender_email === chatPartnerEmail) {
-            appendMessage(incomingData.message, false);
-        }
-    };
-
-    chatSocket.onerror = (error) => {
-        console.error("WebSocket Error:", error);
-    };
+    connectWebSocket();
 
 
+    
     const sendBtn = document.getElementById('send-btn');
     const chatInput = document.getElementById('chat-input');
 
@@ -145,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = chatInput.value.trim();
         if (!text) return;
 
-        if (chatSocket.readyState !== WebSocket.OPEN) {
-            alert("Connection lost! Render might be waking up. Please refresh the page.");
-            console.error("Socket state is:", chatSocket.readyState);
+        
+        if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
+            alert("Still waking up the server! Please wait a few seconds and try again.");
             return;
         }
 
@@ -166,8 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Error sending message over the live socket.");
         }
     }
-
    
+    
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
