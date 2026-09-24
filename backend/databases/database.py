@@ -6,6 +6,7 @@ client = AsyncIOMotorClient(settings.mongodb_url)
 db = client.sereniq_db
 
 users_collection = db.get_collection("users")
+users_message_collection = db.get_collection("messages")
 
 async def connected_to_mongoDB():
     try:
