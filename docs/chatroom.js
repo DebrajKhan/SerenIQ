@@ -12,10 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
    
     let currentUserEmail = "";
     try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        
+        const payload = JSON.parse(atob(base64));
         currentUserEmail = payload.sub;
     } catch (e) {
-        console.error("Invalid token format.");
+        console.error("Invalid token format or decoding failed.");
         return;
     }
 
