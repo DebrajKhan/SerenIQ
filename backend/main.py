@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from databases.database import connected_to_mongoDB, terminate_mongoDB
-from routers import auth, add_friend,my_friends,respond_friend_req,get_friend_req, chat_socket
+from routers import auth, add_friend,my_friends,respond_friend_req,get_friend_req, chat_socket, chat_notification_api
 
 
 
@@ -33,3 +33,4 @@ app.include_router(my_friends.router)
 app.include_router(respond_friend_req.router)
 app.include_router(get_friend_req.router)
 app.include_router(chat_socket.router)
+app.include_router(chat_notification_api.router)
