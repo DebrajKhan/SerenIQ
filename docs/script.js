@@ -1,7 +1,20 @@
 const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 const API_BASE_URL = isLocalhost 
     ? "http://127.0.0.1:8000"                  
-    : "https://sereniq-row2.onrender.com";     
+    : "https://sereniq-row2.onrender.com";    
+    
+    
+function getCurrentUserEmail() {
+    const token = localStorage.getItem("sereniq_token");
+    if (!token) return null;
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64)).sub;
+    } catch (e) {
+        return null;
+    }
+}    
 
 document.addEventListener("DOMContentLoaded", () => {
     checkToastAlerts();
@@ -241,7 +254,7 @@ async function loadFriends() {
 
             friends.forEach(friend => {
                 const cardHtml = `
-                    <div class="friend-container">
+                    <div class="friend-container" data-email="${friend.email}">
                         <svg viewBox="0 0 120 120" class="profile-pic-svg">
                             <circle cx="60" cy="60" r="58" fill="#d7eedb"/>
                             <circle cx="60" cy="45" r="22" fill="#8fc9a2"/>
@@ -257,10 +270,13 @@ async function loadFriends() {
                                 <path d="M16 10.5L22 7.5V16.5L16 13.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             
-                            <!-- MAGIC HAPPENS HERE: Added onclick redirect with the friend's email -->
-                            <svg onclick="window.location.href='chatroom.html?friend=${encodeURIComponent(friend.email)}'" viewBox="0 0 24 24" class="send-message-svg" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <!-- UPDATED: Wrapped in the badge container and triggers openChatRoom -->
+                            <div class="msg-action-wrapper" onclick="openChatRoom('${friend.email}')">
+                                <svg viewBox="0 0 24 24" class="send-message-svg" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="chat-badge">0</span>
+                            </div>
                             
                             <svg viewBox="0 0 40 40" class="cancel-btn-svg" xmlns="http://www.w3.org/2000/svg">
                                 <line x1="13.5" y1="13.5" x2="26.5" y2="26.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
@@ -276,51 +292,6 @@ async function loadFriends() {
         console.error("Error loading friends:", error);
     }
 }
-
-
-async function loadFriendRequests() {
-    const token = localStorage.getItem("sereniq_token");
-    if (!token) return;
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/friend-req`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-            const pendingRequests = await response.json();
-            const messageList = document.getElementById('dynamic-message');
-            if (!messageList) return;
-
-            
-            messageList.innerHTML = ''; 
-
-            if (pendingRequests.length === 0) {
-                messageList.innerHTML = `<li class="message-item"><div class="message-content">You have no new notifications.</div></li>`;
-                return;
-            }
-
-            
-            pendingRequests.forEach(request => {
-                const li = document.createElement('li');
-                li.className = 'message-item';
-                
-                li.innerHTML = `
-                    <div class="message-sender">${request.first_name} has sent a friend request!</div>
-                    <div class="message-content" style="margin-top: 5px;">
-                        <button class="accept-button" onclick="respondToRequest('${request.email}', 'accept')">Accept</button>
-                        <button class="reject-button" onclick="respondToRequest('${request.email}', 'reject')">Reject</button>
-                    </div>
-                `;
-                messageList.appendChild(li);
-            });
-        }
-    } catch (error) {
-        console.error("Failed to load notifications:", error);
-    }
-}
-
 
 async function loadFriendRequests() {
     const token = localStorage.getItem("sereniq_token");
@@ -440,3 +411,46 @@ async function checkToastAlerts() {
         console.error("Error fetching toast alerts:", error);
     }
 }
+
+window.openChatRoom = async function(friendEmail) {
+    const userEmail = getCurrentUserEmail();
+    if (userEmail) {
+        try {
+            await fetch(`${API_BASE_URL}/ws/mark-read?user_email=${encodeURIComponent(userEmail)}&sender_email=${encodeURIComponent(friendEmail)}`, {
+                method: 'POST'
+            });
+        } catch (e) {
+            console.error("Failed to mark messages as read:", e);
+        }
+    }
+    window.location.href = `chatroom.html?friend=${encodeURIComponent(friendEmail)}`;
+};
+
+async function fetchUnreadCounts() {
+    const userEmail = getCurrentUserEmail();
+    if (!userEmail) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/ws/unread-counts/${encodeURIComponent(userEmail)}`);
+        if (!response.ok) return;
+        const unreadData = await response.json();
+        document.querySelectorAll('.friend-container').forEach(row => {
+            const friendEmail = row.getAttribute('data-email');
+            const badge = row.querySelector('.chat-badge');
+            
+            if (badge && friendEmail) {
+                if (unreadData[friendEmail]) {
+                    badge.innerText = unreadData[friendEmail];
+                    badge.style.display = 'flex'; 
+                } else {
+                    badge.style.display = 'none'; 
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Failed to fetch unread counts:", error);
+    }
+}
+
+setInterval(fetchUnreadCounts, 5000);
+setTimeout(fetchUnreadCounts, 1000);

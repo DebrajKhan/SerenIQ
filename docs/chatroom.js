@@ -149,13 +149,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             msgContainer.insertAdjacentHTML('afterbegin', htmlChunk);
 
-            if (currentSkip === 0) {
-                msgContainer.scrollTop = msgContainer.scrollHeight; 
+           if (currentSkip === 0) {
+                setTimeout(() => {
+                    msgContainer.scrollTop = msgContainer.scrollHeight; 
+                }, 10);
             } else {
                 msgContainer.scrollTop = msgContainer.scrollHeight - previousScrollHeight; 
             }
-
-            currentSkip += 50; 
+            currentSkip += 50;
             
         } catch (err) {
             console.error("Failed to load history:", err);
@@ -193,7 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
         msgContainer.insertAdjacentHTML('beforeend', msgHTML);
-        msgContainer.scrollTop = msgContainer.scrollHeight; 
+        setTimeout(() => {
+            msgContainer.scrollTop = msgContainer.scrollHeight; 
+        }, 10);
     }
 
 
@@ -238,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     connectWebSocket();
 
-    // --- 7. Sending Outbound Messages ---
+    
     const sendBtn = document.getElementById('send-btn');
     const chatInput = document.getElementById('chat-input');
 
