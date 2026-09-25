@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     msgContainer.addEventListener('scroll', () => {
-        if (msgContainer.scrollTop === 0) {
+        if(msgContainer.scrollTop<=2){
             loadChatHistory();
         }
     });
