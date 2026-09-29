@@ -27,7 +27,8 @@ class ConnectionManager():
             "sender_email" : sender_email,
             "target_email" : target_email,
             "message" : message,
-            "timestamp" : datetime.now(timezone.utc)
+            "timestamp" : datetime.now(timezone.utc),
+            "is_read" : False
         }
 
         await users_message_collection.insert_one(msg_doc)
