@@ -22,4 +22,37 @@ async def get_chat_history(sender_email:str, target_email:str, sk:int = 0):
             }
         )
 
-    return history    
+    return history   
+
+@router.get("/unread-counts/{user_email}")
+async def get_unread_counts(user_email : str):
+    pipeline = [
+        {
+            "$match":
+            {
+                "target_email" : user_email,
+                "is_read" : False 
+            }
+        },
+        {
+            "$group":
+            {
+                "_id" : "$sender_email", 
+                "count" : {"$sum" : 1}
+            }
+        }
+    ]
+
+    cursor = users_message_collection.aggregate(pipeline)
+    result = cursor.to_list(length = 100)
+    return {doc["_id"] : doc["count"] for doc in result} 
+
+
+@router.get("/mark-read")
+async def mark_messages_read(user_email:str, sender_email:str):
+    await users_message_collection.update_many(
+        {"target_email" : user_email, "sender_email" : sender_email, "is_read" : False},
+        {"$set" : {"is_read" : True}}
+    )
+
+    return {"status" : "success"}
