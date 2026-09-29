@@ -226,7 +226,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         chatSocket.onmessage = (event) => {
             const incomingData = JSON.parse(event.data);
-            if (incomingData.sender_email === chatPartnerEmail) {
+            const incomingSender = incomingData.sender_email.trim().toLowerCase();
+            const currentPartner = chatPartnerEmail.trim().toLowerCase();
+
+            if (incomingSender === currentPartner) {
                 appendLiveMessage(incomingData.message, false);
             }
         };
