@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!chatPartnerEmail) {
         alert("No friend selected to chat with!");
     }
+    fetch(`${API_BASE_URL}/ws/mark-read?user_email=${encodeURIComponent(currentUserEmail)}&sender_email=${encodeURIComponent(chatPartnerEmail)}`, {
+        method: 'POST'
+    }).catch(err => console.error("Failed to mark messages as read:", err));
 
     const formatName = (email) => {
         if (!email || !email.includes('@')) return email || "Unknown";
