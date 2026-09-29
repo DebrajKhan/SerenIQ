@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from databases.database import users_message_collection
-from chat_socket import get_room_id
+from routers.chat_socket import get_room_id
 
 router = APIRouter(prefix="/ws")
 
