@@ -6,7 +6,9 @@ from databases.database import users_message_collection
 router = APIRouter()
 
 def get_room_id(email1:str, email2:str):
-    return "_".join(sorted([email1,email2]))
+    clean1 = email1.strip().lower()
+    clean2 = email2.strip().lower()
+    return "_".join(sorted([clean1, clean2]))
 
 class ConnectionManager():
     def __init__(self):
@@ -14,18 +16,24 @@ class ConnectionManager():
 
     async def connect(self, websocket:WebSocket, email:str):
         await websocket.accept()
-        self.active_connections[email] = websocket
+        clean_email = email.strip().lower()
+        self.active_connections[clean_email] = websocket
 
     def disconnect(self, email:str):
-        if email in self.active_connections:
-            del self.active_connections[email]
+        clean_email = email.strip().lower()
+        if clean_email in self.active_connections:
+            del self.active_connections[clean_email]
 
     async def send_personal_message(self, message:str, sender_email:str, target_email:str):
-        room_id = get_room_id(sender_email, target_email)
+        
+        clean_sender = sender_email.strip().lower()
+        clean_target = target_email.strip().lower()
+        
+        room_id = get_room_id(clean_sender, clean_target)
         msg_doc = {
             "room_id" : room_id,
-            "sender_email" : sender_email,
-            "target_email" : target_email,
+            "sender_email" : clean_sender,
+            "target_email" : clean_target,
             "message" : message,
             "timestamp" : datetime.now(timezone.utc),
             "is_read" : False
@@ -33,14 +41,13 @@ class ConnectionManager():
 
         await users_message_collection.insert_one(msg_doc)
 
-        if target_email in self.active_connections:
+        if clean_target in self.active_connections:
             payload = {
-                "sender_email" : sender_email,
+                "sender_email" : clean_sender,
                 "message" : message,
                 "timestamp" : msg_doc["timestamp"].isoformat()
             }
-
-            await self.active_connections[target_email].send_json(payload)
+            await self.active_connections[clean_target].send_json(payload)
             
 
 manager = ConnectionManager()
