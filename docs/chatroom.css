@@ -479,3 +479,54 @@ body {
     color: rgba(127, 170, 132, 0.4);
     font-weight: 600;
 }
+
+.back-btn{
+    display: none;
+    background: transparent;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: all ease 0.3s;
+}
+
+.back-btn:hover{
+    transform: translateX(-3px);
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 0; /* Remove padding to touch the phone edges */
+    }
+
+    .chat-window {
+        /* Use 100dvh (Dynamic Viewport Height) so mobile browser address bars don't cut off the input box */
+        height: 100dvh; 
+        border-radius: 0;
+        border: none;
+        grid-template-columns: 1fr; /* Collapse to a single full-width column */
+    }
+
+    .sidebar {
+        display: none; /* Hide the sidebar on small screens */
+    }
+
+    .back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Give chat bubbles slightly more width on narrow screens */
+    .message-row {
+        max-width: 85%; 
+    }
+
+    .chat-header {
+        padding: 12px 16px;
+    }
+
+    .input-area {
+        padding: 10px 12px 12px; /* Tighter padding for mobile screen bottoms */
+    }
+}

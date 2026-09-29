@@ -54,6 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderHeader() {
         document.getElementById('dynamic-chat-header').innerHTML = `
+            <button class="back-btn" onclick="window.location.href='sereniq_main1.html'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d4a30" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            
             <div class="avatar md">${profileSVG}</div>
             <div class="header-info">
                 <h2>${chatPartnerName}</h2>
