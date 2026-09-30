@@ -1,0 +1,1 @@
+document.getElementById('leave-btn').classList.add('hidden');

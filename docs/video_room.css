@@ -38,3 +38,51 @@ body{
         background-position: 0% 0%;
     }
 }
+
+.video-window> .controls-bar > div{
+    width: 52px;
+    height: 52px;
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+} 
+
+.video-window> .controls-bar > div:hover{
+    transform: translateY(-4px);
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.video-window > .controls-bar > div svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease;
+}
+
+.video-window > .controls-bar > div:hover svg {
+    transform: scale(1.1);
+}
+
+
+#leave-btn {
+    background: #ff4b4b !important;
+}
+
+#leave-btn:hover {
+    background: #e60000 !important;
+}
+
+#leave-btn svg,
+#leave-btn svg path {
+    fill: #ffffff !important;
+}
+
+.hidden {
+    display: none !important;
+}
